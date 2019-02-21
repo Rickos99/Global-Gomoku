@@ -65,37 +65,37 @@ public class GameGrid extends Observable {
 	}
 
 	private boolean diagonalWestToEast(int player) {
-		//Upper half.
+		// Upper half.
 		for (int n = 0; n < this.size; n++) {
 			int score = 0;
 			int i = 0;
 			while (n + i < this.size) {
-					if (this.cord[n + i][i] == player) {
-						score += 1;
-					} else {
-						score = 0;
-					}
-					if (score == INROW) {
-						return true;
-					}
-					i+=1;
+				if (this.cord[n + i][i] == player) {
+					score += 1;
+				} else {
+					score = 0;
+				}
+				if (score == INROW) {
+					return true;
+				}
+				i += 1;
 			}
 		}
 
-		//Lower half.
+		// Lower half.
 		for (int n = 0; n < this.size; n++) {
 			int score = 0;
 			int i = 0;
 			while (n + i < this.size) {
-					if (this.cord[i][n + i] == player) {
-						score += 1;
-					} else {
-						score = 0;
-					}
-					if (score == INROW) {
-						return true;
-					}
-					i+=1;
+				if (this.cord[i][n + i] == player) {
+					score += 1;
+				} else {
+					score = 0;
+				}
+				if (score == INROW) {
+					return true;
+				}
+				i += 1;
 			}
 		}
 		return false;
@@ -103,7 +103,7 @@ public class GameGrid extends Observable {
 
 	private boolean diagonalEastToWest(int player) {
 
-		///Upper half.
+		/// Upper half.
 		for (int n = 0; n < this.size; n++) {
 			int score = 0;
 			int i = 0;
@@ -120,7 +120,7 @@ public class GameGrid extends Observable {
 			}
 		}
 
-		//Lower half.
+		// Lower half.
 		for (int n = 0; n < this.size; n++) {
 			int score = 0;
 			int i = 0;
@@ -191,26 +191,6 @@ public class GameGrid extends Observable {
 			return true;
 		}
 		return false;
-	}
-
-	public static void main(String[] args) {
-
-		GameGrid test = new GameGrid(8);
-		// System.out.println(test.move(0, 1, 2));
-		// System.out.println(test.move(0, 1, 2));
-		// test.move(2, 2, 2);
-		// test.move(3, 3, 2);
-		test.move(0, 7, 2);
-		test.move(1, 6, 2);
-		test.move(2, 5, 2);
-		test.move(2, 2, 2);
-		// System.out.println(test.getLocation(0, 8));
-		// test.move(8, 1, 2);
-		// test.move(5, 1, 2);
-		// test.move(6, 1, 2);
-		// test.move(7, 1, 2);
-		System.out.println(test.isWinner(2));
-		// System.out.println(test.getSize());
 	}
 
 }
