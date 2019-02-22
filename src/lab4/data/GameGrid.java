@@ -3,6 +3,14 @@ package lab4.data;
 import java.util.Observable;
 
 @SuppressWarnings("deprecation")
+/**
+ * 
+ * The playing field for gomoku.
+ * 
+ * @author Bernstgunnar
+ *
+ */
+
 public class GameGrid extends Observable {
 
 	public static final int EMPTY = 0;
@@ -12,6 +20,11 @@ public class GameGrid extends Observable {
 	private final int size;
 	private final int INROW = 3; // Win condition.
 
+	/**
+	 * 
+	 * 
+	 * @param n size for the game grid in x axis and y axis
+	 */
 	public GameGrid(int n) {
 		this.size = n;
 		this.cord = new int[n][];
@@ -21,40 +34,65 @@ public class GameGrid extends Observable {
 				tempCord[i] = EMPTY;
 
 			}
-			this.cord[q] = tempCord; /// sets every slot of the y axis to the
-										/// same
-			/// size
-			/// of the x axis. ie a nxn square space.
+			this.cord[q] = tempCord;
 
 		}
 	}
+
+	/**
+	 * 
+	 * @param x axis
+	 * 
+	 * @param y axis
+	 * 
+	 * @return The current occupant of this grid.
+	 */
 
 	public int getLocation(int x, int y) {
 		return this.cord[x][y];
 	}
 
+	/**
+	 * 
+	 * @return The total size of the game grid.
+	 */
 	public int getSize() {
 		return this.size * this.size;
 	}
 
+	/**
+	 * 
+	 * Moves a player to the desired grid position if it's empty.
+	 * 
+	 * @param x axis
+	 * 
+	 * @param y axis
+	 * 
+	 * @param player current player.
+	 * 
+	 * @return true if desired position was empty else false.
+	 */
 	public boolean move(int x, int y, int player) {
-		try {
-			if (this.cord[x][y] == EMPTY) {
+		if(x < 0 || x >= this.size ||
+			y < 0 || y >= this.size){
+			setChanged();
+			notifyObservers();
+			return false;
+		}else if(this.cord[x][y] == EMPTY) {
 				this.cord[x][y] = player;
 				setChanged();
 				notifyObservers();
 				return true;
 			}
-			setChanged();
-			notifyObservers();
-			return false;
-		} catch (ArrayIndexOutOfBoundsException e) {
-			//
-			setChanged();
-			notifyObservers();
-			return false;
-		}
+		setChanged();
+		notifyObservers();
+		return false;
 	}
+
+	/**
+	 * Resets the game grid when new game is called.
+	 * 
+	 */
 
 	public void clearGrid() {
 		for (int[] x : this.cord) {
@@ -62,8 +100,17 @@ public class GameGrid extends Observable {
 				x[i] = EMPTY;
 			}
 		}
+		setChanged();
+		notifyObservers();
 	}
 
+	/**
+	 * Checks win condition for player diagonally from west to east.
+	 * 
+	 * @param player current player
+	 * @return true if win condition met for player diagonally from west to east
+	 *         else false.
+	 */
 	private boolean diagonalWestToEast(int player) {
 		// Upper half.
 		for (int n = 0; n < this.size; n++) {
@@ -101,6 +148,14 @@ public class GameGrid extends Observable {
 		return false;
 	}
 
+	/**
+	 * Checks win condition for player diagonally from east to west.
+	 * 
+	 * @param player
+	 *            current player
+	 * @return true if win condition met for player diagonally from east to west
+	 *         else false.
+	 */
 	private boolean diagonalEastToWest(int player) {
 
 		/// Upper half.
@@ -124,7 +179,6 @@ public class GameGrid extends Observable {
 		for (int n = 0; n < this.size; n++) {
 			int score = 0;
 			int i = 0;
-			System.out.println("C");
 			while (n + i < this.size) {
 				if (this.cord[(this.size - 1) - i][n + i] == player) {
 					score += 1;
@@ -142,12 +196,25 @@ public class GameGrid extends Observable {
 		return false;
 	}
 
+	/**
+	 * Checks win condition for player diagonally.
+	 * 
+	 * @param player
+	 * @return true if win condition met for player diagonally.
+	 */
 	private boolean checkDiagonal(int player) {
 		if (diagonalWestToEast(player) || diagonalEastToWest(player)) {
 			return true;
 		}
 		return false;
 	}
+
+	/**
+	 * Checks win condition for player vertically.
+	 * 
+	 * @param player
+	 * @return true if win condition met vertically, else false.
+	 */
 
 	private boolean checkVertical(int player) {
 		for (int[] x : this.cord) {
@@ -159,7 +226,6 @@ public class GameGrid extends Observable {
 					score = 0; // resets the score.
 				}
 				if (score == INROW) {
-					System.out.println("vertical");
 					return true;
 				}
 			}
@@ -167,6 +233,12 @@ public class GameGrid extends Observable {
 		return false;
 	}
 
+	/**
+	 * Checks win condition for player horizontally.
+	 * 
+	 * @param player
+	 * @return true if win condition met horizontally, else false.
+	 */
 	private boolean checkHorizontal(int player) {
 		for (int i = 0; i < this.size; i++) {
 			int score = 0;
@@ -177,7 +249,6 @@ public class GameGrid extends Observable {
 					score = 0;
 				}
 				if (score == INROW) {
-					System.out.println("horizontal");
 					return true;
 				}
 			}
@@ -186,6 +257,11 @@ public class GameGrid extends Observable {
 
 	}
 
+	/*
+	 * Checks if players has met any of the win conditions.
+	 * 
+	 * @param player for this player.
+	 */
 	public boolean isWinner(int player) {
 		if (checkDiagonal(player) || checkVertical(player) || checkHorizontal(player)) {
 			return true;
