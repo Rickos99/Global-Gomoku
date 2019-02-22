@@ -86,4 +86,12 @@ public class GamePanel extends JPanel implements Observer {
 		}
 	}
 	
+	/**
+	 * Get size of each cell in the grid.
+	 * @return Size of each cell in the grid.
+	 */
+	public static int getGridSize() {
+		return UNIT_SIZE;
+	}
+
 }
