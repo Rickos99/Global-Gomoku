@@ -15,7 +15,7 @@ import lab4.data.GameGrid;
  */
 
 public class GamePanel extends JPanel implements Observer{
-
+	
 	private final int UNIT_SIZE = 20;
 	private GameGrid grid;
 
@@ -66,7 +66,8 @@ public class GamePanel extends JPanel implements Observer{
 			
 			int sX = getGridPosition(i,i)[0];
 			int sY = getGridPosition(i,i)[1];
-			
+			System.out.println(sX);
+			System.out.println(sY);
 			for(int n = 0; n < grid.getSize(); n++ ) {
 				g.setColor(Color.BLACK);
 				g.drawRect(sX*n, sY, UNIT_SIZE, UNIT_SIZE);

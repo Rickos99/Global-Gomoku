@@ -21,7 +21,7 @@ import lab4.data.GomokuGameState;
 public class GomokuGUI implements Observer{
 	
 	public static void main(String[] args) {
-		GomokuClient gc = new GomokuClient(4000);
+		GomokuClient gc = new GomokuClient(2000);
 		GomokuGameState gs = new GomokuGameState(gc);
 		new GomokuGUI(gs, gc).createLayout();
 	}
