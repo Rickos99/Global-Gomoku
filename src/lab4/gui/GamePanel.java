@@ -55,30 +55,32 @@ public class GamePanel extends JPanel implements Observer{
 	}
 	/**
 	 * 
-	 * Paint each grid square and paints an oval if the grid square is occupied.
+	 * Paints each grid square of the game grid and paints an oval in the grid square if it's occupied.
 	 * 
 	 * 
 	 */
 	
 	public void paintComponent(Graphics g){
 		super.paintComponent(g);
-		for(int i = 0; i<Math.sqrt(grid.getSize()); i++) {
+		for(int i = 0; i<grid.getSize(); i++) {
 			
 			int sX = getGridPosition(i,i)[0];
 			int sY = getGridPosition(i,i)[1];
 			
-			for(int n = 0; n < Math.sqrt(grid.getSize()); n++ ) {
+			for(int n = 0; n < grid.getSize(); n++ ) {
 				g.setColor(Color.BLACK);
 				g.drawRect(sX*n+1, sY, UNIT_SIZE, UNIT_SIZE);
 				if(grid.getLocation(i,i) == GameGrid.ME) {
-					g.drawOval(sX*n+1, sY, UNIT_SIZE, UNIT_SIZE);
 					g.setColor(Color.RED);
 					g.fillOval(sX*n, sY, UNIT_SIZE, UNIT_SIZE);
+					g.setColor(Color.BLACK);
+					g.drawOval(sX*n, sY, UNIT_SIZE, UNIT_SIZE);
 					
 				}else if(grid.getLocation(i, i) == GameGrid.OTHER) {
-					g.drawOval(sX*n+1, sY, UNIT_SIZE, UNIT_SIZE);
 					g.setColor(Color.BLUE);
 					g.fillOval(sX*n, sY, UNIT_SIZE, UNIT_SIZE);
+					g.setColor(Color.BLACK);
+					g.drawOval(sX*n, sY, UNIT_SIZE, UNIT_SIZE);
 				}
 				
 			}

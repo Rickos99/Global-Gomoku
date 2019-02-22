@@ -57,7 +57,7 @@ public class GameGrid extends Observable {
 	 * @return The total size of the game grid.
 	 */
 	public int getSize() {
-		return this.size * this.size;
+		return this.size;
 	}
 
 	/**
