@@ -64,12 +64,12 @@ public class GamePanel extends JPanel implements Observer{
 		super.paintComponent(g);
 		for(int i = 0; i<grid.getSize(); i++) {
 			
-			int sX = getGridPosition(i,i)[0];
-			int sY = getGridPosition(i,i)[1];
-			
 			for(int n = 0; n < grid.getSize(); n++ ) {
+				int sX = getGridPosition(n,i)[0];
+				int sY = getGridPosition(n,i)[1];
 				g.setColor(Color.BLACK);
-				g.drawRect(sX*n, sY, UNIT_SIZE, UNIT_SIZE);
+				g.drawRect(sX, sY, UNIT_SIZE, UNIT_SIZE);
+				System.out.println("x: " + sX*n + ", y" + sY);
 				if(grid.getLocation(i,i) == GameGrid.ME) {
 					g.setColor(Color.RED);
 					g.fillOval(sX*n, sY, UNIT_SIZE, UNIT_SIZE);
@@ -82,7 +82,6 @@ public class GamePanel extends JPanel implements Observer{
 					g.setColor(Color.BLACK);
 					g.drawOval(sX*n, sY, UNIT_SIZE, UNIT_SIZE);
 				}
-				
 			}
 		}
 		
