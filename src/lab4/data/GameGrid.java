@@ -75,8 +75,6 @@ public class GameGrid extends Observable {
 	public boolean move(int x, int y, int player) {
 		if(x < 0 || x >= this.size ||
 			y < 0 || y >= this.size){
-			setChanged();
-			notifyObservers();
 			return false;
 		}else if(this.cord[x][y] == EMPTY) {
 				this.cord[x][y] = player;
@@ -84,8 +82,6 @@ public class GameGrid extends Observable {
 				notifyObservers();
 				return true;
 			}
-		setChanged();
-		notifyObservers();
 		return false;
 	}
 

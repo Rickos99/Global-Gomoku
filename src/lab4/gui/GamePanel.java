@@ -18,6 +18,7 @@ public class GamePanel extends JPanel implements Observer{
 
 	private final int UNIT_SIZE = 20;
 	private GameGrid grid;
+
 	
 	/**
 	 * The constructor
@@ -25,6 +26,7 @@ public class GamePanel extends JPanel implements Observer{
 	 * @param grid The grid that is to be displayed
 	 */
 	public GamePanel(GameGrid grid){
+
 		this.grid = grid;
 		grid.addObserver(this);
 		Dimension d = new Dimension(grid.getSize()*UNIT_SIZE+1, grid.getSize()*UNIT_SIZE+1);
@@ -41,14 +43,46 @@ public class GamePanel extends JPanel implements Observer{
 	 * @param y the y coordinates
 	 * @return an integer array containing the [x, y] grid position
 	 */
-	public int[] getGridPosition(int x, int y){}
+	public int[] getGridPosition(int x, int y){
+		int[] tempGrid = new int[2];
+		tempGrid[0] = x*UNIT_SIZE;
+		tempGrid[1] = y*UNIT_SIZE;
+		return tempGrid;
+	}
 	
 	public void update(Observable arg0, Object arg1) {
 		this.repaint();
 	}
+	/**
+	 * 
+	 * Paint each grid square and paints an oval if the grid square is occupied.
+	 * 
+	 * 
+	 */
 	
 	public void paintComponent(Graphics g){
 		super.paintComponent(g);
+		for(int i = 0; i<Math.sqrt(grid.getSize()); i++) {
+			
+			int sX = getGridPosition(i,i)[0];
+			int sY = getGridPosition(i,i)[1];
+			
+			for(int n = 0; n < Math.sqrt(grid.getSize()); n++ ) {
+				g.setColor(Color.BLACK);
+				g.drawRect(sX*n+1, sY, UNIT_SIZE, UNIT_SIZE);
+				if(grid.getLocation(i,i) == GameGrid.ME) {
+					g.drawOval(sX*n+1, sY, UNIT_SIZE, UNIT_SIZE);
+					g.setColor(Color.RED);
+					g.fillOval(sX*n, sY, UNIT_SIZE, UNIT_SIZE);
+					
+				}else if(grid.getLocation(i, i) == GameGrid.OTHER) {
+					g.drawOval(sX*n+1, sY, UNIT_SIZE, UNIT_SIZE);
+					g.setColor(Color.BLUE);
+					g.fillOval(sX*n, sY, UNIT_SIZE, UNIT_SIZE);
+				}
+				
+			}
+		}
 		
 	}
 	
