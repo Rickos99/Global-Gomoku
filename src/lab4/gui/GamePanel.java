@@ -14,77 +14,76 @@ import lab4.data.GameGrid;
  * A panel providing a graphical view of the game board
  */
 
-public class GamePanel extends JPanel implements Observer{
-	
-	private final int UNIT_SIZE = 20;
+public class GamePanel extends JPanel implements Observer {
+
+	private static final int UNIT_SIZE = 20;
 	private GameGrid grid;
 
-	
 	/**
 	 * The constructor
 	 * 
 	 * @param grid The grid that is to be displayed
 	 */
-	public GamePanel(GameGrid grid){
+	public GamePanel(GameGrid grid) {
 
 		this.grid = grid;
 		grid.addObserver(this);
-		Dimension d = new Dimension(grid.getSize()*UNIT_SIZE+1, grid.getSize()*UNIT_SIZE+1);
+		Dimension d = new Dimension(grid.getSize() * UNIT_SIZE + 1,
+				grid.getSize() * UNIT_SIZE + 1);
 		this.setMinimumSize(d);
 		this.setPreferredSize(d);
 		this.setBackground(Color.WHITE);
 	}
 
 	/**
-	 * Returns a grid position given pixel coordinates
-	 * of the panel
+	 * Returns a grid position given pixel coordinates of the panel
 	 * 
 	 * @param x the x coordinates
 	 * @param y the y coordinates
 	 * @return an integer array containing the [x, y] grid position
 	 */
-	public int[] getGridPosition(int x, int y){
+	public int[] getGridPosition(int x, int y) {
 		int[] tempGrid = new int[2];
-		tempGrid[0] = x*UNIT_SIZE;
-		tempGrid[1] = y*UNIT_SIZE;
+		tempGrid[0] = x * UNIT_SIZE;
+		tempGrid[1] = y * UNIT_SIZE;
 		return tempGrid;
 	}
-	
+
 	public void update(Observable arg0, Object arg1) {
 		this.repaint();
 	}
+
 	/**
 	 * 
-	 * Paints each grid square of the game grid and paints an oval in the grid square if it's occupied.
+	 * Paints each grid square of the game grid and paints an oval in the grid
+	 * square if it's occupied.
 	 * 
 	 * 
 	 */
-	
-	public void paintComponent(Graphics g){
+	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		for(int i = 0; i<grid.getSize(); i++) {
-			
-			for(int n = 0; n < grid.getSize(); n++ ) {
-				int sX = getGridPosition(n,i)[0];
-				int sY = getGridPosition(n,i)[1];
+		for (int i = 0; i < grid.getSize(); i++) {
+			for (int n = 0; n < grid.getSize(); n++) {
+				int sX = getGridPosition(n, i)[0];
+				int sY = getGridPosition(n, i)[1];
+
 				g.setColor(Color.BLACK);
 				g.drawRect(sX, sY, UNIT_SIZE, UNIT_SIZE);
-				System.out.println("x: " + sX*n + ", y" + sY);
-				if(grid.getLocation(i,i) == GameGrid.ME) {
+
+				if (grid.getLocation(i, i) == GameGrid.ME) {
 					g.setColor(Color.RED);
-					g.fillOval(sX*n, sY, UNIT_SIZE, UNIT_SIZE);
+					g.fillOval(sX * n, sY, UNIT_SIZE, UNIT_SIZE);
 					g.setColor(Color.BLACK);
-					g.drawOval(sX*n, sY, UNIT_SIZE, UNIT_SIZE);
-					
-				}else if(grid.getLocation(i, i) == GameGrid.OTHER) {
+					g.drawOval(sX * n, sY, UNIT_SIZE, UNIT_SIZE);
+
+				} else if (grid.getLocation(i, i) == GameGrid.OTHER) {
 					g.setColor(Color.BLUE);
-					g.fillOval(sX*n, sY, UNIT_SIZE, UNIT_SIZE);
+					g.fillOval(sX * n, sY, UNIT_SIZE, UNIT_SIZE);
 					g.setColor(Color.BLACK);
-					g.drawOval(sX*n, sY, UNIT_SIZE, UNIT_SIZE);
+					g.drawOval(sX * n, sY, UNIT_SIZE, UNIT_SIZE);
 				}
 			}
 		}
-		
 	}
 	
 }
