@@ -62,25 +62,25 @@ public class GamePanel extends JPanel implements Observer {
 	 */
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		for (int i = 0; i < grid.getSize(); i++) {
-			for (int n = 0; n < grid.getSize(); n++) {
-				int sX = getGridPosition(n, i)[0];
-				int sY = getGridPosition(n, i)[1];
+		for (int x = 0; x < grid.getSize(); x++) {
+			for (int y = 0; y < grid.getSize(); y++) {
+				int sX = getGridPosition(x, y)[0];
+				int sY = getGridPosition(x, y)[1];
 
 				g.setColor(Color.BLACK);
 				g.drawRect(sX, sY, UNIT_SIZE, UNIT_SIZE);
 
-				if (grid.getLocation(i, i) == GameGrid.ME) {
+				if (grid.getLocation(x, y) == GameGrid.ME) {
 					g.setColor(Color.RED);
-					g.fillOval(sX * n, sY, UNIT_SIZE, UNIT_SIZE);
+					g.fillOval(sX, sY, UNIT_SIZE, UNIT_SIZE);
 					g.setColor(Color.BLACK);
-					g.drawOval(sX * n, sY, UNIT_SIZE, UNIT_SIZE);
+					g.drawOval(sX, sY, UNIT_SIZE, UNIT_SIZE);
 
-				} else if (grid.getLocation(i, i) == GameGrid.OTHER) {
+				} else if (grid.getLocation(x, y) == GameGrid.OTHER) {
 					g.setColor(Color.BLUE);
-					g.fillOval(sX * n, sY, UNIT_SIZE, UNIT_SIZE);
+					g.fillOval(sX, sY, UNIT_SIZE, UNIT_SIZE);
 					g.setColor(Color.BLACK);
-					g.drawOval(sX * n, sY, UNIT_SIZE, UNIT_SIZE);
+					g.drawOval(sX, sY, UNIT_SIZE, UNIT_SIZE);
 				}
 			}
 		}
