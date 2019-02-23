@@ -17,6 +17,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import lab4.client.GomokuClient;
+import lab4.data.GameGrid;
 import lab4.data.GomokuGameState;
 
 /*
@@ -141,9 +142,9 @@ public class GomokuGUI implements Observer {
 
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				double gridX = Math.ceil(e.getX() / GamePanel.getGridSize());
-				double gridY = Math.ceil(e.getY() / GamePanel.getGridSize());
-				System.out.println("x:" + gridX + ", y:" + gridY);
+				int x = e.getX() / GamePanel.getCellSize();
+				int y = e.getY() / GamePanel.getCellSize();
+				gamestate.move(x, y);
 			}
 		});
 
