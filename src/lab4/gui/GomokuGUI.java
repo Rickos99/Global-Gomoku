@@ -15,6 +15,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
 
 import lab4.client.GomokuClient;
 import lab4.data.GameGrid;
@@ -27,9 +28,15 @@ import lab4.data.GomokuGameState;
 public class GomokuGUI implements Observer {
 
 	public static void main(String[] args) {
-		GomokuClient gc = new GomokuClient(2000);
+		int portNumber;
+		try {
+			portNumber = Integer.parseInt(args[0]);
+		} catch (Exception e) {
+			portNumber = 4001;
+		}
+		
+		GomokuClient gc = new GomokuClient(portNumber);
 		GomokuGameState gs = new GomokuGameState(gc);
-
 		GomokuGUI gomokuGUI = new GomokuGUI(gs, gc);
 
 		gomokuGUI.createButtons();
@@ -93,7 +100,11 @@ public class GomokuGUI implements Observer {
 		connectButton = new JButton("Connect");
 		newGameButton = new JButton("New game");
 		disconnectButton = new JButton("Disconnect");
-
+		
+		connectButton.setEnabled(true);
+		newGameButton.setEnabled(false);
+		disconnectButton.setEnabled(false);
+		
 		connectButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -173,8 +184,9 @@ public class GomokuGUI implements Observer {
 		panel.add(gameGridPanel);
 		panel.add(buttonPanel);
 		panel.add(messagePanel);
+		panel.setBorder(new EmptyBorder(20, 20, 20, 20));
 
-		JFrame frame = new JFrame("GUI");
+		JFrame frame = new JFrame("Gomoku");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setContentPane(panel);
 		frame.pack();
