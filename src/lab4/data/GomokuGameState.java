@@ -23,6 +23,7 @@ public class GomokuGameState extends Observable implements Observer {
 		NOT_STARTED, MY_TURN, OTHERS_TURN, FINISHED
 	}
 
+	// Current game state
 	private GameStates currentState;
 
 	/**
@@ -63,35 +64,32 @@ public class GomokuGameState extends Observable implements Observer {
 	 * @param y the y coordinate on game grid
 	 */
 	public void move(int x, int y) {
-		if(currentState == GameStates.NOT_STARTED) {
-			message = "Game not started!";
-		} else if(currentState == GameStates.FINISHED) {
-			message = "The game has ended";
+		if (currentState == GameStates.NOT_STARTED) {
+			changeGameMessage("Game not started!");
+		} else if (currentState == GameStates.FINISHED) {
+			changeGameMessage("The game has ended");
 		} else {
 			boolean isMyTurn = currentState == GameStates.MY_TURN;
 			boolean tileIsEmpty = gameGrid.getLocation(x, y) == GameGrid.EMPTY;
-			
+
 			if (isMyTurn && tileIsEmpty) {
-				if(gameGrid.move(x, y, GameGrid.ME)) {
+				if (gameGrid.move(x, y, GameGrid.ME)) {
 					client.sendMoveMessage(x, y);
-					currentState = GameStates.OTHERS_TURN;
-					message = "Waiting for the opponent's move";
+					changeGameState(GameStates.OTHERS_TURN,
+							"Waiting for the opponent's move");
 				}
 				if (gameGrid.isWinner(GameGrid.ME)) {
-					currentState = GameStates.FINISHED;
-					message = "Congratulations, you have won!";
+					changeGameState(GameStates.FINISHED,
+							"Congratulations, you have won!");
 				}
 			} else {
 				if (!isMyTurn) {
-					message = "You have to wait for your turn";
+					changeGameMessage("You have to wait for your turn");
 				} else if (!tileIsEmpty) {
-					message = "The tile is already occupied";
+					changeGameMessage("The tile is already occupied");
 				}
-			}	
+			}
 		}
-
-		setChanged();
-		notifyObservers();
 	}
 
 	/**
@@ -100,11 +98,7 @@ public class GomokuGameState extends Observable implements Observer {
 	public void newGame() {
 		client.sendNewGameMessage();
 		gameGrid.clearGrid();
-		currentState = GameStates.OTHERS_TURN;
-		message = "The game has been reset";
-
-		setChanged();
-		notifyObservers();
+		changeGameState(GameStates.OTHERS_TURN, "The game has been reset");
 	}
 
 	/**
@@ -113,11 +107,7 @@ public class GomokuGameState extends Observable implements Observer {
 	 */
 	public void receivedNewGame() {
 		gameGrid.clearGrid();
-		currentState = GameStates.MY_TURN;
-		message = "A new game has been received";
-
-		setChanged();
-		notifyObservers();
+		changeGameState(GameStates.MY_TURN, "A new game has been received");
 	}
 
 	/**
@@ -125,11 +115,7 @@ public class GomokuGameState extends Observable implements Observer {
 	 */
 	public void otherGuyLeft() {
 		gameGrid.clearGrid();
-		currentState = GameStates.NOT_STARTED;
-		message = "Your opponent left";
-
-		setChanged();
-		notifyObservers();
+		changeGameState(GameStates.NOT_STARTED, "Your opponent left");
 	}
 
 	/**
@@ -138,11 +124,7 @@ public class GomokuGameState extends Observable implements Observer {
 	public void disconnect() {
 		client.disconnect();
 		gameGrid.clearGrid();
-		currentState = GameStates.NOT_STARTED;
-		message = "You are now diconnected";
-
-		setChanged();
-		notifyObservers();
+		changeGameState(GameStates.NOT_STARTED, "You are now diconnected");
 	}
 
 	/**
@@ -155,29 +137,48 @@ public class GomokuGameState extends Observable implements Observer {
 		gameGrid.move(x, y, GameGrid.OTHER);
 
 		if (gameGrid.isWinner(GameGrid.OTHER)) {
-			currentState = GameStates.FINISHED;
-			message = "You lose, better luck next time!";
+			changeGameState(GameStates.FINISHED,
+					"You lose, better luck next time!");
 		} else {
-			currentState = GameStates.MY_TURN;
-			message = "It is your turn";
+			changeGameState(GameStates.MY_TURN, "It is your turn");
 		}
-		
-		setChanged();
-		notifyObservers();
 	}
-	
+
 	public void update(Observable o, Object arg) {
 
 		switch (client.getConnectionStatus()) {
 		case GomokuClient.CLIENT:
-			currentState = GameStates.MY_TURN;
-			message = "Game started, it is your turn!";
+			changeGameState(GameStates.MY_TURN,
+					"Game started, it is your turn!");
 			break;
 		case GomokuClient.SERVER:
-			currentState = GameStates.OTHERS_TURN;
-			message = "Game started, waiting for other player...";
+			changeGameState(GameStates.OTHERS_TURN,
+					"Game started, waiting for other player...");
 			break;
 		}
+	}
+
+	/**
+	 * Change state of game and change message for user to view.
+	 * 
+	 * @param state   New state of game
+	 * @param message Message for user to view
+	 */
+	private void changeGameState(GameStates state, String message) {
+		this.currentState = state;
+		this.message = message;
+
+		setChanged();
+		notifyObservers();
+	}
+
+	/**
+	 * Change message for user to view.
+	 * 
+	 * @param message Message for user to view
+	 */
+	private void changeGameMessage(String message) {
+		this.message = message;
 
 		setChanged();
 		notifyObservers();
