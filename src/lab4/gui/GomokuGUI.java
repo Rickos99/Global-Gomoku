@@ -1,13 +1,11 @@
 package lab4.gui;
-import java.awt.Color;
-import java.awt.Container;
-import java.awt.Dimension;
+
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -15,8 +13,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.Spring;
-import javax.swing.SpringLayout;
+import javax.swing.border.EmptyBorder;
 
 import lab4.client.GomokuClient;
 import lab4.data.GomokuGameState;
@@ -25,194 +22,171 @@ import lab4.data.GomokuGameState;
  * The GUI class
  */
 
-public class GomokuGUI implements Observer{
-	
-	public static void main(String[] args) {
-		GomokuClient gc = new GomokuClient(2222);
-		GomokuGameState gs = new GomokuGameState(gc);
-		GomokuClient gc2 = new GomokuClient(3333);
-		GomokuGameState gs2 = new GomokuGameState(gc);
-		GomokuGUI test = new GomokuGUI(gs,gc);
-		GomokuGUI testTwo = new GomokuGUI(gs2,gc2);
+public class GomokuGUI implements Observer {
 
+	public static void main(String[] args) {
+		int portNumber;
+		try {
+			portNumber = Integer.parseInt(args[0]);
+		} catch (Exception e) {
+			portNumber = 4001;
+		}
+		
+		GomokuClient gc = new GomokuClient(portNumber);
+		GomokuGameState gs = new GomokuGameState(gc);
+		GomokuGUI gomokuGUI = new GomokuGUI(gs, gc);
+
+		gomokuGUI.createButtons();
+		gomokuGUI.createLabels();
+		gomokuGUI.createPanels();
+		gomokuGUI.createLayout();
 	}
 
 	private GomokuClient client;
 	private GomokuGameState gamestate;
-	
+
 	// Buttons
 	private JButton connectButton;
 	private JButton newGameButton;
 	private JButton disconnectButton;
-	
+
 	// Labels
 	private JLabel messageLabel;
-	
+
 	// Panels
 	private JPanel gameGridPanel;
+	private JPanel buttonPanel;
+	private JPanel messagePanel;
 
-
-	
-	// Frame
-	private JFrame frame;
-	
 	/**
 	 * The constructor
 	 * 
-	 * @param g   The game state that the GUI will visualize
-	 * @param c   The client that is responsible for the communication
+	 * @param g The game state that the GUI will visualize
+	 * @param c The client that is responsible for the communication
 	 */
-	public GomokuGUI(GomokuGameState g, GomokuClient c){
+	public GomokuGUI(GomokuGameState g, GomokuClient c) {
 		this.client = c;
 		this.gamestate = g;
 		client.addObserver(this);
 		gamestate.addObserver(this);
-		
-		
-		try{
-
-			//Status label.
-			messageLabel = new JLabel("Welcome.");
-			
-			//Creates gomoku field.
-			gameGridPanel = new GamePanel(gamestate.getGameGrid());
-			gameGridPanel.addMouseListener(new MouseAdapter(){
-				public void mouseClicked(MouseEvent e){
-					//Ska börja fixa musklickaren en snabbis! Låt den vara åt mig. //pe
-					int tempX = (int)Math.floor(e.getX()/GamePanel.UNIT_SIZE);
-					int tempY = (int)Math.floor(e.getY()/GamePanel.UNIT_SIZE);
-					System.out.println("x value = "+tempX + " y value = "+tempY);
-					g.move(tempX, tempY);
-				}
-				
-			});
-			//Connect button.
-			connectButton = new JButton("Connect");
-			connectButton.addActionListener(new ActionListener(){
-
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					ConnectionWindow temp = new ConnectionWindow(client);
-					
-					
-					
-				}
-				
-			});
-			//New game button.
-			newGameButton = new JButton("New Game");
-			newGameButton.addActionListener(new ActionListener(){
-
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					gamestate.newGame();
-					
-				}
-				
-			});
-			//Disconnect button.
-			disconnectButton = new JButton("Disconnect");
-			disconnectButton.addActionListener(new ActionListener(){
-
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					gamestate.disconnect();
-					
-				}
-				
-			});
-
-			//Layout of the buttons and panels.
-			frame = new JFrame("Gomoku");
-			
-			//Layout for button container.
-//			Container buttonContainer = frame.getContentPane();
-//			SpringLayout buttonLayout = new SpringLayout();
-//			
-//			
-//			//Adding buttons to container.
-//			buttonContainer.add(connectButton);
-//			buttonContainer.add(newGameButton);
-//			buttonContainer.add(disconnectButton);
-//			
-//			//Positions the buttons in the container.
-//			buttonLayout.putConstraint(SpringLayout.WEST,connectButton, 5, SpringLayout.WEST, buttonContainer);
-//			buttonLayout.putConstraint(SpringLayout.EAST,connectButton,5, SpringLayout.WEST,newGameButton);
-//			buttonLayout.putConstraint(SpringLayout.EAST,newGameButton,5, SpringLayout.WEST,disconnectButton);
-//			buttonLayout.putConstraint(SpringLayout.NORTH, connectButton, 5, SpringLayout.NORTH, buttonContainer);
-//
-//			buttonContainer.setLayout(buttonLayout);
-//			
-			//Create the layout for the entire frame.
-			SpringLayout layout = new SpringLayout();
-			JPanel mainPanel = new JPanel();
-			
-			mainPanel.add(gameGridPanel);
-			mainPanel.add(connectButton);
-			mainPanel.add(newGameButton);
-			mainPanel.add(disconnectButton);
-			mainPanel.add(messageLabel);
-			
-			
-			layout.putConstraint(SpringLayout.NORTH, gameGridPanel, 50, SpringLayout.NORTH, mainPanel);
-			layout.putConstraint(SpringLayout.WEST, gameGridPanel, 50, SpringLayout.WEST, mainPanel);
-			layout.putConstraint(SpringLayout.WEST, connectButton, 50, SpringLayout.WEST, mainPanel);
-			layout.putConstraint(SpringLayout.NORTH, connectButton, 5, SpringLayout.SOUTH, gameGridPanel);
-			layout.putConstraint(SpringLayout.NORTH, newGameButton, 5, SpringLayout.SOUTH, gameGridPanel);
-			layout.putConstraint(SpringLayout.NORTH, disconnectButton, 5, SpringLayout.SOUTH, gameGridPanel);
-			layout.putConstraint(SpringLayout.NORTH, messageLabel, 5, SpringLayout.SOUTH, connectButton);
-			layout.putConstraint(SpringLayout.WEST,newGameButton, 5, SpringLayout.EAST,connectButton);
-			layout.putConstraint(SpringLayout.WEST,disconnectButton, 5, SpringLayout.EAST, newGameButton);
-			
-			
-			mainPanel.setLayout(layout);
-			
-
-
-			
-			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-			frame.setContentPane(mainPanel);
-			
-			frame.setResizable(false);
-			frame.setSize(500,500);
-			frame.setLocationRelativeTo(null);
-			frame.setVisible(true);
-		}
-		catch(Exception e){System.out.println("Exception occoured.");}
-		
-		
-		
-		
 	}
-	
-	
+
 	public void update(Observable arg0, Object arg1) {
-		
+
 		// Update the buttons if the connection status has changed
-		if(arg0 == client){
-			if(client.getConnectionStatus() == GomokuClient.UNCONNECTED){
+		if (arg0 == client) {
+			if (client.getConnectionStatus() == GomokuClient.UNCONNECTED) {
 				connectButton.setEnabled(true);
 				newGameButton.setEnabled(false);
 				disconnectButton.setEnabled(false);
-			}else{
+			} else {
 				connectButton.setEnabled(false);
 				newGameButton.setEnabled(true);
 				disconnectButton.setEnabled(true);
 			}
 		}
-		
+
 		// Update the status text if the gamestate has changed
-		if(arg0 == gamestate){
+		if (arg0 == gamestate) {
 			messageLabel.setText(gamestate.getMessageString());
 		}
-		
+
 	}
 
-	
+	private void createButtons() {
+		connectButton = new JButton("Connect");
+		newGameButton = new JButton("New game");
+		disconnectButton = new JButton("Disconnect");
+		
+		connectButton.setEnabled(true);
+		newGameButton.setEnabled(false);
+		disconnectButton.setEnabled(false);
+		
+		connectButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				new ConnectionWindow(client);
+			}
+		});
+		newGameButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				gamestate.newGame();
+			}
+		});
+		disconnectButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				gamestate.disconnect();
+			}
+		});
+	}
+
+	private void createLabels() {
+		messageLabel = new JLabel("Welcome to Gomoku!");
+	}
+
+	private void createPanels() {
+		gameGridPanel = new GamePanel(gamestate.getGameGrid());
+		buttonPanel = new JPanel();
+		messagePanel = new JPanel();
+
+		gameGridPanel.addMouseListener(new MouseListener() {
+			@Override
+			public void mouseReleased(MouseEvent e) {
+			}
+
+			@Override
+			public void mousePressed(MouseEvent e) {
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent e) {
+			}
+
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				int x = e.getX() / GamePanel.getCellSize();
+				int y = e.getY() / GamePanel.getCellSize();
+				gamestate.move(x, y);
+			}
+		});
+
+		buttonPanel.add(connectButton);
+		buttonPanel.add(newGameButton);
+		buttonPanel.add(disconnectButton);
+
+		messagePanel.add(messageLabel);
+	}
+
+	private void createLayout() {
+		GridBagLayout layout = new GridBagLayout();
+		GridBagConstraints c = new GridBagConstraints();
+
+		c.gridy = 0;
+		layout.setConstraints(gameGridPanel, c);
+
+		c.gridy = 1;
+		layout.setConstraints(buttonPanel, c);
+
+		c.gridy = 2;
+		layout.setConstraints(messagePanel, c);
+
+		JPanel panel = new JPanel();
+		panel.setLayout(layout);
+		panel.add(gameGridPanel);
+		panel.add(buttonPanel);
+		panel.add(messagePanel);
+		panel.setBorder(new EmptyBorder(20, 20, 20, 20));
+
+		JFrame frame = new JFrame("Gomoku");
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setContentPane(panel);
+		frame.pack();
+		frame.setVisible(true);
+	}
 }
-
-
-
-
-
-
