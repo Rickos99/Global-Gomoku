@@ -2,15 +2,13 @@ package lab4.data;
 
 import java.util.Observable;
 
-@SuppressWarnings("deprecation")
 /**
  * 
- * The playing field for gomoku.
+ * The playing field for Gomoku.
  * 
  * @author Bernstgunnar
  *
  */
-
 public class GameGrid extends Observable {
 
 	public static final int EMPTY = 0;
@@ -64,24 +62,23 @@ public class GameGrid extends Observable {
 	 * 
 	 * Moves a player to the desired grid position if it's empty.
 	 * 
-	 * @param x axis
+	 * @param x      axis
 	 * 
-	 * @param y axis
+	 * @param y      axis
 	 * 
 	 * @param player current player.
 	 * 
 	 * @return true if desired position was empty else false.
 	 */
 	public boolean move(int x, int y, int player) {
-		if(x < 0 || x >= this.size ||
-			y < 0 || y >= this.size){
+		if (x < 0 || x >= this.size || y < 0 || y >= this.size) {
 			return false;
-		}else if(this.cord[x][y] == EMPTY) {
-				this.cord[x][y] = player;
-				setChanged();
-				notifyObservers();
-				return true;
-			}
+		} else if (this.cord[x][y] == EMPTY) {
+			this.cord[x][y] = player;
+			setChanged();
+			notifyObservers();
+			return true;
+		}
 		return false;
 	}
 
@@ -147,8 +144,7 @@ public class GameGrid extends Observable {
 	/**
 	 * Checks win condition for player diagonally from east to west.
 	 * 
-	 * @param player
-	 *            current player
+	 * @param player current player
 	 * @return true if win condition met for player diagonally from east to west
 	 *         else false.
 	 */
@@ -259,7 +255,8 @@ public class GameGrid extends Observable {
 	 * @param player for this player.
 	 */
 	public boolean isWinner(int player) {
-		if (checkDiagonal(player) || checkVertical(player) || checkHorizontal(player)) {
+		if (checkDiagonal(player) || checkVertical(player)
+				|| checkHorizontal(player)) {
 			return true;
 		}
 		return false;

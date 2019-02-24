@@ -11,16 +11,20 @@ import javax.swing.JPanel;
 import lab4.data.GameGrid;
 
 /**
- * A panel providing a graphical view of the game board
+ * A {@code JPanel} providing a graphical view of the game board.
+ * 
+ * @author Bernstgunnar
+ * @author Rickard Bemm
+ * 
  */
-
 public class GamePanel extends JPanel implements Observer {
 
 	private final int UNIT_SIZE = 20;
 	private GameGrid grid;
 
 	/**
-	 * The constructor
+	 * Constructs a {@code GamePanel} and initializes it to use
+	 * {@code GameGrid grid}
 	 * 
 	 * @param grid The grid that is to be displayed
 	 */
@@ -43,7 +47,8 @@ public class GamePanel extends JPanel implements Observer {
 	 * @return An integer array containing the [x, y] grid position
 	 */
 	public int[] getGridPosition(int x, int y) {
-		int[] tempGrid = {(int)Math.floor(x/UNIT_SIZE),(int)Math.floor(y/UNIT_SIZE)};
+		int[] tempGrid = { (int) Math.floor(x / UNIT_SIZE),
+				(int) Math.floor(y / UNIT_SIZE) };
 		return tempGrid;
 	}
 
@@ -52,11 +57,10 @@ public class GamePanel extends JPanel implements Observer {
 	}
 
 	/**
-	 * 
 	 * Paints each grid square of the game grid and paints an oval in the grid
 	 * square if it's occupied.
 	 * 
-	 * 
+	 * @param g graphics object to paint on
 	 */
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
@@ -64,23 +68,26 @@ public class GamePanel extends JPanel implements Observer {
 			for (int y = 0; y < grid.getSize(); y++) {
 
 				g.setColor(Color.BLACK);
-				g.drawRect(x*UNIT_SIZE, y*UNIT_SIZE, UNIT_SIZE, UNIT_SIZE);
+				g.drawRect(x * UNIT_SIZE, y * UNIT_SIZE, UNIT_SIZE, UNIT_SIZE);
 
 				if (grid.getLocation(x, y) == GameGrid.ME) {
 					g.setColor(Color.RED);
-					g.fillOval(x*UNIT_SIZE,y*UNIT_SIZE, UNIT_SIZE, UNIT_SIZE);
+					g.fillOval(x * UNIT_SIZE, y * UNIT_SIZE, UNIT_SIZE,
+							UNIT_SIZE);
 					g.setColor(Color.BLACK);
-					g.drawOval(x*UNIT_SIZE, UNIT_SIZE*y, UNIT_SIZE, UNIT_SIZE);
+					g.drawOval(x * UNIT_SIZE, UNIT_SIZE * y, UNIT_SIZE,
+							UNIT_SIZE);
 
 				} else if (grid.getLocation(x, y) == GameGrid.OTHER) {
 					g.setColor(Color.BLUE);
-					g.fillOval(x*UNIT_SIZE, y*UNIT_SIZE, UNIT_SIZE, UNIT_SIZE);
+					g.fillOval(x * UNIT_SIZE, y * UNIT_SIZE, UNIT_SIZE,
+							UNIT_SIZE);
 					g.setColor(Color.BLACK);
-					g.drawOval(x*UNIT_SIZE, y*UNIT_SIZE, UNIT_SIZE, UNIT_SIZE);
+					g.drawOval(x * UNIT_SIZE, y * UNIT_SIZE, UNIT_SIZE,
+							UNIT_SIZE);
 				}
 			}
 		}
 	}
-
 
 }

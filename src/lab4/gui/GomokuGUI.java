@@ -18,12 +18,14 @@ import javax.swing.border.EmptyBorder;
 import lab4.client.GomokuClient;
 import lab4.data.GomokuGameState;
 
-/*
+/**
  * The GUI class
+ * 
+ * @author Bernstgunnar
+ * @author Rickard Bemm
+ * 
  */
-
 public class GomokuGUI implements Observer {
-
 
 	private GomokuClient client;
 	private GomokuGameState gamestate;
