@@ -24,18 +24,6 @@ import lab4.data.GomokuGameState;
 
 public class GomokuGUI implements Observer {
 
-	public static void main(String[] args) {
-		int portNumber;
-		try {
-			portNumber = Integer.parseInt(args[0]);
-		} catch (Exception e) {
-			portNumber = 4001;
-		}
-
-		GomokuClient gc = new GomokuClient(portNumber);
-		GomokuGameState gs = new GomokuGameState(gc);
-		new GomokuGUI(gs, gc);
-	}
 
 	private GomokuClient client;
 	private GomokuGameState gamestate;
