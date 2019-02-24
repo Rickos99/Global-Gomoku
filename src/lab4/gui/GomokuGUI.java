@@ -31,15 +31,10 @@ public class GomokuGUI implements Observer {
 		} catch (Exception e) {
 			portNumber = 4001;
 		}
-		
+
 		GomokuClient gc = new GomokuClient(portNumber);
 		GomokuGameState gs = new GomokuGameState(gc);
-		GomokuGUI gomokuGUI = new GomokuGUI(gs, gc);
-
-		gomokuGUI.createButtons();
-		gomokuGUI.createLabels();
-		gomokuGUI.createPanels();
-		gomokuGUI.createLayout();
+		new GomokuGUI(gs, gc);
 	}
 
 	private GomokuClient client;
@@ -69,6 +64,11 @@ public class GomokuGUI implements Observer {
 		this.gamestate = g;
 		client.addObserver(this);
 		gamestate.addObserver(this);
+
+		this.createButtons();
+		this.createLabels();
+		this.createPanels();
+		this.createLayout();
 	}
 
 	public void update(Observable arg0, Object arg1) {
@@ -97,11 +97,11 @@ public class GomokuGUI implements Observer {
 		connectButton = new JButton("Connect");
 		newGameButton = new JButton("New game");
 		disconnectButton = new JButton("Disconnect");
-		
+
 		connectButton.setEnabled(true);
 		newGameButton.setEnabled(false);
 		disconnectButton.setEnabled(false);
-		
+
 		connectButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -150,9 +150,9 @@ public class GomokuGUI implements Observer {
 
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				int x = e.getX() / GamePanel.getCellSize();
-				int y = e.getY() / GamePanel.getCellSize();
-				gamestate.move(x, y);
+				int[] coords = new GamePanel(gamestate.getGameGrid())
+						.getGridPosition(e.getX(), e.getY());
+				gamestate.move(coords[0], coords[1]);
 			}
 		});
 
