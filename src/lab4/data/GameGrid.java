@@ -2,6 +2,8 @@ package lab4.data;
 
 import java.util.Observable;
 
+import com.sun.rowset.internal.Row;
+
 /**
  * 
  * The playing field for Gomoku.
@@ -14,6 +16,9 @@ public class GameGrid extends Observable {
 	public static final int EMPTY = 0;
 	public static final int ME = 1;
 	public static final int OTHER = 2;
+	/**
+	 * Grid data with [x, y] layout
+	 */
 	private int[][] cord;
 	private final int size;
 	private final int INROW = 3; // Win condition.
@@ -98,105 +103,33 @@ public class GameGrid extends Observable {
 	}
 
 	/**
-	 * Checks win condition for player diagonally from west to east.
-	 * 
-	 * @param player current player
-	 * @return true if win condition met for player diagonally from west to east
-	 *         else false.
-	 */
-	private boolean diagonalWestToEast(int player) {
-		// Upper half.
-		for (int n = 0; n < this.size; n++) {
-			int score = 0;
-			int i = 0;
-			while (n + i < this.size) {
-				if (this.cord[n + i][i] == player) {
-					score += 1;
-				} else {
-					score = 0;
-				}
-				if (score == INROW) {
-					return true;
-				}
-				i += 1;
-			}
-		}
-
-		// Lower half.
-		for (int n = 0; n < this.size; n++) {
-			int score = 0;
-			int i = 0;
-			while (n + i < this.size) {
-				if (this.cord[i][n + i] == player) {
-					score += 1;
-				} else {
-					score = 0;
-				}
-				if (score == INROW) {
-					return true;
-				}
-				i += 1;
-			}
-		}
-		return false;
-	}
-
-	/**
 	 * Checks win condition for player diagonally from east to west.
 	 * 
 	 * @param player current player
 	 * @return true if win condition met for player diagonally from east to west
 	 *         else false.
 	 */
-	private boolean diagonalEastToWest(int player) {
-
-		/// Upper half.
-		for (int n = 0; n < this.size; n++) {
-			int score = 0;
-			int i = 0;
-			while (n + i < this.size) {
-				if (this.cord[(this.size - 1) - (n + i)][i] == player) {
-					score += 1;
-				} else {
-					score = 0;
-				}
-				if (score == INROW) {
-					return true;
-				}
-				i += 1;
-			}
-		}
-
-		// Lower half.
-		for (int n = 0; n < this.size; n++) {
-			int score = 0;
-			int i = 0;
-			while (n + i < this.size) {
-				if (this.cord[(this.size - 1) - i][n + i] == player) {
-					score += 1;
-				} else {
-					score = 0;
-				}
-				if (score == INROW) {
-					return true;
-				}
-				i += 1;
-			}
-
-		}
-
-		return false;
-	}
-
-	/**
-	 * Checks win condition for player diagonally.
-	 * 
-	 * @param player
-	 * @return true if win condition met for player diagonally.
-	 */
 	private boolean checkDiagonal(int player) {
-		if (diagonalWestToEast(player) || diagonalEastToWest(player)) {
-			return true;
+		for (int x = 0; x < cord.length; x++) {
+			for (int y = 0; y < cord.length - INROW + 1; y++) {
+				int scoreSE = 0;
+				int scoreSW = 0;
+				for (int i = 0; i < INROW; i++) {
+					if (x + i < cord.length) {
+						if (cord[x + i][y + i] == player) {
+							scoreSE++;
+						}
+					}
+					if (0 <= x - i) {
+						if (cord[x - i][y + i] == player) {
+							scoreSW++;
+						}
+					}
+				}
+				if (scoreSE == INROW || scoreSW == INROW) {
+					return true;
+				}
+			}
 		}
 		return false;
 	}
@@ -207,15 +140,14 @@ public class GameGrid extends Observable {
 	 * @param player
 	 * @return true if win condition met vertically, else false.
 	 */
-
 	private boolean checkVertical(int player) {
-		for (int[] x : this.cord) {
+		for (int[] coloumns : cord) {
 			int score = 0;
-			for (int i = 0; i < x.length; i++) {
-				if (x[i] == player) {
-					score += 1;
+			for (int cell : coloumns) {
+				if (cell == player) {
+					score++;
 				} else {
-					score = 0; // resets the score.
+					score = 0; // Resets the score
 				}
 				if (score == INROW) {
 					return true;
@@ -232,13 +164,13 @@ public class GameGrid extends Observable {
 	 * @return true if win condition met horizontally, else false.
 	 */
 	private boolean checkHorizontal(int player) {
-		for (int i = 0; i < this.size; i++) {
+		for (int y = 0; y < this.size; y++) {
 			int score = 0;
-			for (int q = 0; q < this.size; q++) {
-				if (this.cord[q][i] == player) {
+			for (int x = 0; x < this.size; x++) {
+				if (this.cord[x][y] == player) {
 					score += 1;
 				} else {
-					score = 0;
+					score = 0; // Resets the score
 				}
 				if (score == INROW) {
 					return true;
@@ -246,7 +178,6 @@ public class GameGrid extends Observable {
 			}
 		}
 		return false;
-
 	}
 
 	/*
@@ -255,11 +186,8 @@ public class GameGrid extends Observable {
 	 * @param player for this player.
 	 */
 	public boolean isWinner(int player) {
-		if (checkDiagonal(player) || checkVertical(player)
-				|| checkHorizontal(player)) {
-			return true;
-		}
-		return false;
+		return checkVertical(player) || checkHorizontal(player)
+				|| checkDiagonal(player);
 	}
 
 }
