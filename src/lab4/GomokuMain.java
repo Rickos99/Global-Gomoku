@@ -10,12 +10,11 @@ public class GomokuMain {
 		int portNumber;
 		//Default port.
 		if(args.length == 0) {
-			portNumber=4001;
-            GomokuClient gc=new GomokuClient(portNumber);
+            GomokuClient gc=new GomokuClient(4001);
             GomokuGameState gs=new GomokuGameState(gc);
             new GomokuGUI(gs,gc);
             //Two clients to test out the game.
-            GomokuClient gc2=new GomokuClient(4337);
+            GomokuClient gc2=new GomokuClient(4002);
             GomokuGameState gs2=new GomokuGameState(gc2);
             new GomokuGUI(gs2,gc2);
 		}else{
