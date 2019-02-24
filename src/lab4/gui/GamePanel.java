@@ -43,9 +43,7 @@ public class GamePanel extends JPanel implements Observer {
 	 * @return An integer array containing the [x, y] grid position
 	 */
 	public int[] getGridPosition(int x, int y) {
-		int[] tempGrid = new int[2];
-		tempGrid[0] = x * UNIT_SIZE;
-		tempGrid[1] = y * UNIT_SIZE;
+		int[] tempGrid = {(int)Math.floor(x/UNIT_SIZE),(int)Math.floor(y/UNIT_SIZE)};
 		return tempGrid;
 	}
 
