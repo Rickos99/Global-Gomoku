@@ -190,7 +190,6 @@ public class GomokuGUI implements Observer {
 		JFrame frame = new JFrame("Gomoku");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setContentPane(panel);
-		
 		frame.pack();
 		frame.setVisible(true);
 		frame.setMinimumSize(panel.getSize());
