@@ -144,6 +144,14 @@ public class GomokuGameState extends Observable implements Observer {
 		}
 	}
 
+	/**
+	 * This method is called whenever the observed object is changed.
+	 * Anapplication calls an Observable object's notifyObservers method to have
+	 * all the object'sobservers notified of the change.
+	 * 
+	 * @param o the observable object.
+	 * @param arg an argument passed to the notifyObserversmethod.
+	 */
 	public void update(Observable o, Object arg) {
 
 		switch (client.getConnectionStatus()) {
