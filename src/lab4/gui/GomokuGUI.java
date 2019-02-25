@@ -185,7 +185,7 @@ public class GomokuGUI implements Observer {
 		panel.add(gameGridPanel);
 		panel.add(buttonPanel);
 		panel.add(messagePanel);
-		panel.setBorder(new EmptyBorder(20, 20, 20, 20));
+		panel.setBorder(new EmptyBorder(40, 20, 40, 20));
 
 		JFrame frame = new JFrame("Gomoku");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
