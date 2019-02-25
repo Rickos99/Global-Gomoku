@@ -19,8 +19,9 @@ import lab4.data.GameGrid;
  */
 public class GamePanel extends JPanel implements Observer {
 
-	private final int UNIT_SIZE = 20;
+	private final int UNIT_SIZE = 10;
 	private GameGrid grid;
+	private Dimension frameSize;
 
 	/**
 	 * Constructs a {@code GamePanel} and initializes it to use
@@ -32,11 +33,16 @@ public class GamePanel extends JPanel implements Observer {
 
 		this.grid = grid;
 		grid.addObserver(this);
-		Dimension d = new Dimension(grid.getSize() * UNIT_SIZE + 1,
+		this.frameSize = new Dimension(grid.getSize() * UNIT_SIZE + 1,
 				grid.getSize() * UNIT_SIZE + 1);
-		this.setMinimumSize(d);
-		this.setPreferredSize(d);
+		
+		this.setMinimumSize(frameSize);
+		this.setPreferredSize(frameSize);
 		this.setBackground(Color.WHITE);
+	}
+	
+	int getUnitSize() {
+		return UNIT_SIZE;
 	}
 
 	/**

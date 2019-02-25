@@ -1,5 +1,6 @@
 package lab4.gui;
 
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
@@ -189,8 +190,10 @@ public class GomokuGUI implements Observer {
 		JFrame frame = new JFrame("Gomoku");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setContentPane(panel);
-		frame.setResizable(false);
+		
 		frame.pack();
 		frame.setVisible(true);
+		frame.setMinimumSize(panel.getSize());
+	
 	}
 }
