@@ -2,13 +2,13 @@ package lab4.data;
 
 import java.util.Observable;
 
-import com.sun.rowset.internal.Row;
+
 
 /**
  * 
  * The playing field for Gomoku.
  * 
- * @author Bernstgunnar
+ * @author Philip Eriksson
  * @author Rickard Bemm
  *
  */
