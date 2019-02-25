@@ -99,7 +99,7 @@ public class GomokuGameState extends Observable implements Observer {
 	public void newGame() {
 		client.sendNewGameMessage();
 		gameGrid.clearGrid();
-		changeGameState(GameStates.OTHERS_TURN, "The game has been reset");
+		changeGameState(GameStates.OTHERS_TURN, "The game has been reset, waiting for opponent.");
 	}
 
 	/**
@@ -108,7 +108,8 @@ public class GomokuGameState extends Observable implements Observer {
 	 */
 	public void receivedNewGame() {
 		gameGrid.clearGrid();
-		changeGameState(GameStates.MY_TURN, "A new game has been received");
+		changeGameState(GameStates.MY_TURN,
+				"A new game has been received. It's your turn!");
 	}
 
 	/**
@@ -150,7 +151,7 @@ public class GomokuGameState extends Observable implements Observer {
 	 * Anapplication calls an Observable object's notifyObservers method to have
 	 * all the object'sobservers notified of the change.
 	 * 
-	 * @param o the observable object.
+	 * @param o   the observable object.
 	 * @param arg an argument passed to the notifyObserversmethod.
 	 */
 	public void update(Observable o, Object arg) {
