@@ -23,7 +23,9 @@ import lab4.data.GomokuGameState;
  * 
  * @author Philip Eriksson
  * @author Rickard Bemm
- * 
+ *
+ * @see lab4.client.GomokuClient
+ * @see lab4.client.Listener
  */
 public class GomokuGUI implements Observer {
 
@@ -48,6 +50,9 @@ public class GomokuGUI implements Observer {
 	 * 
 	 * @param g The game state that the GUI will visualize
 	 * @param c The client that is responsible for the communication
+	 * 
+	 * @see lab4.client.GomokuClient
+	 * @see lab4.client.Listener
 	 */
 	public GomokuGUI(GomokuGameState g, GomokuClient c) {
 		this.client = c;
@@ -66,7 +71,7 @@ public class GomokuGUI implements Observer {
 	 * Anapplication calls an Observable object's notifyObservers method to have
 	 * all the object'sobservers notified of the change.
 	 * 
-	 * @param o the observable object.
+	 * @param o   the observable object.
 	 * @param arg an argument passed to the notifyObserversmethod.
 	 */
 	public void update(Observable arg0, Object arg1) {
