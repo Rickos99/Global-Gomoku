@@ -100,11 +100,10 @@ public class GameGrid extends Observable {
 	}
 
 	/**
-	 * Checks win condition for player diagonally from east to west.
+	 * Checks win condition for player diagonally.
 	 * 
 	 * @param player current player
-	 * @return true if win condition met for player diagonally from east to west
-	 *         else false.
+	 * @return true if win condition met for player diagonally else false.
 	 */
 	private boolean checkDiagonal(int player) {
 		for (int x = 0; x < cord.length; x++) {
