@@ -13,7 +13,7 @@ import lab4.data.GameGrid;
 /**
  * A {@code JPanel} providing a graphical view of the game board.
  * 
- * @author Bernstgunnar
+ * @author Philip Eriksson
  * @author Rickard Bemm
  * 
  */
@@ -51,7 +51,10 @@ public class GamePanel extends JPanel implements Observer {
 				(int) Math.floor(y / UNIT_SIZE) };
 		return tempGrid;
 	}
-
+	/**
+	 * 
+	 * 
+	 */
 	public void update(Observable arg0, Object arg1) {
 		this.repaint();
 	}

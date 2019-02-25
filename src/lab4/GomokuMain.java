@@ -4,6 +4,16 @@ import lab4.client.GomokuClient;
 import lab4.data.GomokuGameState;
 import lab4.gui.GomokuGUI;
 
+
+/**
+ * 
+ * Driver method for Gomoku.
+ * 
+ * @author Rickard Bemm
+ * @author Philip Eriksson
+ *
+ */
+
 public class GomokuMain {
 
 	public static void main(String[] args) {
