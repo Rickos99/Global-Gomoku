@@ -21,7 +21,7 @@ import lab4.data.GomokuGameState;
 /**
  * The GUI class
  * 
- * @author Bernstgunnar
+ * @author Philip Eriksson
  * @author Rickard Bemm
  *
  * @see lab4.client.GomokuClient
