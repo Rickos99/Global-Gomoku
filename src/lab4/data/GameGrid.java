@@ -23,7 +23,7 @@ public class GameGrid extends Observable {
 	 */
 	private int[][] cord;
 	private final int size;
-	private final int INROW = 3; // Win condition.
+	private final int INROW = 5; // Win condition.
 
 	/**
 	 * Construct a new instance of a {@code GameGrid} object
