@@ -2,8 +2,6 @@ package lab4.data;
 
 import java.util.Observable;
 
-
-
 /**
  * 
  * The playing field for Gomoku.
@@ -23,7 +21,7 @@ public class GameGrid extends Observable {
 	 */
 	private int[][] cord;
 	private final int size;
-	private final int INROW = 3; // Win condition.
+	private final int INROW = 5; // Win condition.
 
 	/**
 	 * Construct a new instance of a {@code GameGrid} object
@@ -77,9 +75,7 @@ public class GameGrid extends Observable {
 	 * @return true if desired position was empty else false.
 	 */
 	public boolean move(int x, int y, int player) {
-		if (x < 0 || x >= this.size || y < 0 || y >= this.size) {
-			return false;
-		} else if (this.cord[x][y] == EMPTY) {
+		if (this.cord[x][y] == EMPTY) {
 			this.cord[x][y] = player;
 			setChanged();
 			notifyObservers();
@@ -187,8 +183,7 @@ public class GameGrid extends Observable {
 	 * @param player for this player.
 	 */
 	public boolean isWinner(int player) {
-		return checkVertical(player) || checkHorizontal(player)
-				|| checkDiagonal(player);
+		return checkVertical(player) || checkHorizontal(player) || checkDiagonal(player);
 	}
 
 }
