@@ -9,6 +9,7 @@ import com.sun.rowset.internal.Row;
  * The playing field for Gomoku.
  * 
  * @author Bernstgunnar
+ * @author Rickard Bemm
  *
  */
 public class GameGrid extends Observable {
@@ -16,6 +17,7 @@ public class GameGrid extends Observable {
 	public static final int EMPTY = 0;
 	public static final int ME = 1;
 	public static final int OTHER = 2;
+
 	/**
 	 * Grid data with [x, y] layout
 	 */
@@ -24,7 +26,7 @@ public class GameGrid extends Observable {
 	private final int INROW = 3; // Win condition.
 
 	/**
-	 * 
+	 * Construct a new instance of a {@code GameGrid} object
 	 * 
 	 * @param n size for the game grid in x axis and y axis
 	 */
@@ -43,10 +45,10 @@ public class GameGrid extends Observable {
 	}
 
 	/**
+	 * Get the current occupant in grid by {@code x} and {@code y} coordinate
 	 * 
-	 * @param x axis
-	 * 
-	 * @param y axis
+	 * @param x x coordinate in grid
+	 * @param y y coordinate in grid
 	 * 
 	 * @return The current occupant of this grid.
 	 */
@@ -56,8 +58,9 @@ public class GameGrid extends Observable {
 	}
 
 	/**
+	 * Get length and width of the game grid
 	 * 
-	 * @return The total size of the game grid.
+	 * @return The length and width of the game grid.
 	 */
 	public int getSize() {
 		return this.size;
@@ -67,11 +70,9 @@ public class GameGrid extends Observable {
 	 * 
 	 * Moves a player to the desired grid position if it's empty.
 	 * 
-	 * @param x      axis
-	 * 
-	 * @param y      axis
-	 * 
-	 * @param player current player.
+	 * @param x      x coordinate in grid
+	 * @param y      y coordinate in grid
+	 * @param player player to move
 	 * 
 	 * @return true if desired position was empty else false.
 	 */
@@ -180,7 +181,7 @@ public class GameGrid extends Observable {
 		return false;
 	}
 
-	/*
+	/**
 	 * Checks if players has met any of the win conditions.
 	 * 
 	 * @param player for this player.

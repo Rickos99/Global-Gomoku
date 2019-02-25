@@ -61,6 +61,14 @@ public class GomokuGUI implements Observer {
 		this.createLayout();
 	}
 
+	/**
+	 * This method is called whenever the observed object is changed.
+	 * Anapplication calls an Observable object's notifyObservers method to have
+	 * all the object'sobservers notified of the change.
+	 * 
+	 * @param o the observable object.
+	 * @param arg an argument passed to the notifyObserversmethod.
+	 */
 	public void update(Observable arg0, Object arg1) {
 
 		// Update the buttons if the connection status has changed
