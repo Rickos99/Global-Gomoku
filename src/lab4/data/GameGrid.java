@@ -22,6 +22,7 @@ public class GameGrid extends Observable {
 	private int[][] cord;
 	private final int size;
 	private final int INROW = 5; // Win condition.
+	private int[] lastAdded = new int[2]; // Most recent node placed.
 
 	/**
 	 * Construct a new instance of a {@code GameGrid} object
@@ -77,6 +78,8 @@ public class GameGrid extends Observable {
 	public boolean move(int x, int y, int player) {
 		if (this.cord[x][y] == EMPTY) {
 			this.cord[x][y] = player;
+			lastAdded[0] = x; // Most recent node x position.
+			lastAdded[1] = y; // Most recent node y position.
 			setChanged();
 			notifyObservers();
 			return true;
@@ -106,28 +109,80 @@ public class GameGrid extends Observable {
 	 * @return true if win condition met for player diagonally else false.
 	 */
 	private boolean checkDiagonal(int player) {
-		for (int x = 0; x < cord.length; x++) {
-			for (int y = 0; y < cord.length - INROW + 1; y++) {
-				int scoreSE = 0;
-				int scoreSW = 0;
-				for (int i = 0; i < INROW; i++) {
-					if (x + i < cord.length) {
-						if (cord[x + i][y + i] == player) {
-							scoreSE++;
-						}
-					}
-					if (0 <= x - i) {
-						if (cord[x - i][y + i] == player) {
-							scoreSW++;
-						}
-					}
+		int score = 1;
+		int tempCord;
+
+		//Diagonal -->. NW -> SE
+		for (int y = 1; y < INROW; y++) {
+			if (lastAdded[0] + y >= this.size || lastAdded[1] + y >= this.size) {
+				break;
+			} else {
+				tempCord = this.cord[y + lastAdded[0]][y + lastAdded[1]];
+				if (tempCord == player) {
+					score += 1;
+				} else {
+					break;
 				}
-				if (scoreSE == INROW || scoreSW == INROW) {
+				if (score == INROW) {
 					return true;
 				}
+
+			}
+		}
+		//Diagonal <--. SE -> NW
+		for (int y2 = 1; y2 < INROW; y2++) {
+			if (lastAdded[0] - y2 < 0 || lastAdded[1] - y2 < 0) {
+				break;
+			} else {
+				tempCord = this.cord[lastAdded[0] - y2][lastAdded[1] - y2];
+				if (tempCord == player) {
+					score += 1;
+				} else {
+					score = 1;
+					break;
+				}
+				if (score == INROW) {
+					return true;
+				}
+
+			}
+		}
+		//Diagonal -->. SW -> NE
+		for (int y3 = 1; y3 < INROW; y3++) {
+			if (lastAdded[0] + y3 >= this.size || lastAdded[1] - y3 < 0) {
+				break;
+			} else {
+				tempCord = this.cord[lastAdded[0] + y3][lastAdded[1] - y3];
+				if (tempCord == player) {
+					score += 1;
+				} else {
+					break;
+				}
+				if (score == INROW) {
+					return true;
+				}
+
+			}
+		}
+		//Diagonal <--. NE -> SW
+		for (int y4 = 1; y4 < INROW; y4++) {
+			if (lastAdded[0] - y4 < 0 || lastAdded[1] + y4 >= this.size) {
+				break;
+			} else {
+				tempCord = this.cord[lastAdded[0] - y4][lastAdded[1] + y4];
+				if (tempCord == player) {
+					score += 1;
+				} else {
+					return false;
+				}
+				if (score == INROW) {
+					return true;
+				}
+
 			}
 		}
 		return false;
+
 	}
 
 	/**
@@ -137,20 +192,44 @@ public class GameGrid extends Observable {
 	 * @return true if win condition met vertically, else false.
 	 */
 	private boolean checkVertical(int player) {
-		for (int[] coloumns : cord) {
-			int score = 0;
-			for (int cell : coloumns) {
-				if (cell == player) {
-					score++;
+		int score = 1;
+		int tempGrid;
+
+		for (int y = 1; y < INROW; y++) {
+			if (lastAdded[1] + y >= this.size) {
+				break;
+			} else {
+				tempGrid = this.cord[lastAdded[0]][lastAdded[1] + y];
+				if (tempGrid == player) {
+					score += 1;
 				} else {
-					score = 0; // Resets the score
+					break;
 				}
 				if (score == INROW) {
 					return true;
 				}
+
 			}
 		}
+		for (int y2 = 1; y2 < INROW; y2++) {
+			if (lastAdded[1] - y2 < 0) {
+				break;
+			} else {
+				tempGrid = this.cord[lastAdded[0]][lastAdded[1] - y2];
+				if (tempGrid == player) {
+					score += 1;
+				} else {
+					return false;
+				}
+				if (score == INROW) {
+					return true;
+				}
+
+			}
+		}
+
 		return false;
+
 	}
 
 	/**
@@ -160,20 +239,44 @@ public class GameGrid extends Observable {
 	 * @return true if win condition met horizontally, else false.
 	 */
 	private boolean checkHorizontal(int player) {
-		for (int y = 0; y < this.size; y++) {
-			int score = 0;
-			for (int x = 0; x < this.size; x++) {
-				if (this.cord[x][y] == player) {
+		int score = 1;
+		int tempGrid;
+
+		for (int x = 1; x < INROW; x++) {
+			if (x + lastAdded[0] >= this.size) {
+				break;
+			} else {
+				tempGrid = this.cord[lastAdded[0] + x][lastAdded[1]];
+				if (tempGrid == player) {
 					score += 1;
 				} else {
-					score = 0; // Resets the score
+					break;
 				}
 				if (score == INROW) {
 					return true;
 				}
+
+			}
+		}
+
+		for (int x2 = 1; x2 < INROW; x2++) {
+			if (lastAdded[0] - x2 < 0) {
+				break;
+			} else {
+				tempGrid = this.cord[lastAdded[0] - x2][lastAdded[1]];
+				if (tempGrid == player) {
+					score += 1;
+				} else {
+					return false;
+				}
+				if (score == INROW) {
+					return true;
+				}
+
 			}
 		}
 		return false;
+
 	}
 
 	/**
