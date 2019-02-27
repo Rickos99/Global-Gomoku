@@ -110,15 +110,16 @@ public class GameGrid extends Observable {
 	 */
 	private boolean checkDiagonal(int player) {
 		int score = 1;
-		int tempCord;
+		int playerAtCoord;
 
-		//Diagonal -->. NW -> SE
+		// Diagonal -->. NW -> SE
 		for (int y = 1; y < INROW; y++) {
-			if (lastAdded[0] + y >= this.size || lastAdded[1] + y >= this.size) {
+			if (lastAdded[0] + y >= this.size
+					|| lastAdded[1] + y >= this.size) {
 				break;
 			} else {
-				tempCord = this.cord[y + lastAdded[0]][y + lastAdded[1]];
-				if (tempCord == player) {
+				playerAtCoord = this.cord[y + lastAdded[0]][y + lastAdded[1]];
+				if (playerAtCoord == player) {
 					score += 1;
 				} else {
 					break;
@@ -129,16 +130,15 @@ public class GameGrid extends Observable {
 
 			}
 		}
-		//Diagonal <--. SE -> NW
+		// Diagonal <--. SE -> NW
 		for (int y2 = 1; y2 < INROW; y2++) {
 			if (lastAdded[0] - y2 < 0 || lastAdded[1] - y2 < 0) {
 				break;
 			} else {
-				tempCord = this.cord[lastAdded[0] - y2][lastAdded[1] - y2];
-				if (tempCord == player) {
+				playerAtCoord = this.cord[lastAdded[0] - y2][lastAdded[1] - y2];
+				if (playerAtCoord == player) {
 					score += 1;
 				} else {
-					score = 1;
 					break;
 				}
 				if (score == INROW) {
@@ -147,13 +147,15 @@ public class GameGrid extends Observable {
 
 			}
 		}
-		//Diagonal -->. SW -> NE
+
+		score = 1;
+		// Diagonal -->. SW -> NE
 		for (int y3 = 1; y3 < INROW; y3++) {
 			if (lastAdded[0] + y3 >= this.size || lastAdded[1] - y3 < 0) {
 				break;
 			} else {
-				tempCord = this.cord[lastAdded[0] + y3][lastAdded[1] - y3];
-				if (tempCord == player) {
+				playerAtCoord = this.cord[lastAdded[0] + y3][lastAdded[1] - y3];
+				if (playerAtCoord == player) {
 					score += 1;
 				} else {
 					break;
@@ -164,13 +166,13 @@ public class GameGrid extends Observable {
 
 			}
 		}
-		//Diagonal <--. NE -> SW
+		// Diagonal <--. NE -> SW
 		for (int y4 = 1; y4 < INROW; y4++) {
 			if (lastAdded[0] - y4 < 0 || lastAdded[1] + y4 >= this.size) {
 				break;
 			} else {
-				tempCord = this.cord[lastAdded[0] - y4][lastAdded[1] + y4];
-				if (tempCord == player) {
+				playerAtCoord = this.cord[lastAdded[0] - y4][lastAdded[1] + y4];
+				if (playerAtCoord == player) {
 					score += 1;
 				} else {
 					return false;
@@ -285,7 +287,8 @@ public class GameGrid extends Observable {
 	 * @param player for this player.
 	 */
 	public boolean isWinner(int player) {
-		return checkVertical(player) || checkHorizontal(player) || checkDiagonal(player);
+		return checkVertical(player) || checkHorizontal(player)
+				|| checkDiagonal(player);
 	}
 
 }
